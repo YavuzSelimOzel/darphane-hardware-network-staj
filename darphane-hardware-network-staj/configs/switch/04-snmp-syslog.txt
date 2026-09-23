@@ -1,0 +1,42 @@
+! =========================================================
+! SW-DARPHANE-TEST — Ağ İzleme: SNMP ve Syslog Konfigürasyonu
+! Kaynak: Staj Günü 18 (30/07/2026)
+! =========================================================
+
+enable
+configure terminal
+
+! --- Log mesajlarının merkezi Syslog sunucusuna yönlendirilmesi ---
+! <SYSLOG_SERVER_IP> yerine scripts/syslog_listener.py aracının
+! çalıştığı makinenin IP adresi yazılmalıdır.
+logging host <SYSLOG_SERVER_IP>
+
+! --- Log detay seviyesi: informational (seviye 6) ---
+logging trap informational
+
+! --- Log kayıtlarına zaman damgası eklenmesi ---
+service timestamps log datetime msec
+
+! --- (Opsiyonel) SNMP salt-okunur topluluk dizesi ---
+snmp-server community <SNMP_COMMUNITY> RO
+
+end
+write memory
+
+! =========================================================
+! Test senaryoları ve beklenen log çıktıları:
+!
+! 1) Port düşmesi/kalkması:
+!    interface FastEthernet0/1
+!    shutdown
+!    no shutdown
+!    -> %LINK-3-UPDOWN: Interface FastEthernet0/1, changed state to down/up
+!
+! 2) Yetkisiz erişim denemesi:
+!    Hatalı enable secret / vty parolası ile giriş denemesi
+!    -> %SEC_LOGIN-4-LOGIN_FAILED
+!
+! Bu loglar UDP 514 portu üzerinden scripts/syslog_listener.py
+! tarafından gerçek zamanlı yakalanır ve logs-sample/ klasörüne
+! kaydedilir.
+! =========================================================

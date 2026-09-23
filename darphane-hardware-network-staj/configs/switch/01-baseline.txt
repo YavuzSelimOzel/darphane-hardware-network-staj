@@ -1,0 +1,48 @@
+! =========================================================
+! SW-DARPHANE-TEST — Temel (Baseline) Konfigürasyon
+! Kaynak: Staj Günü 8 (16/07/2026)
+! Cihaz: Cisco 2960 Katman-2 Yönetilebilir Switch
+! Erişim: RS-232 / USB-to-RJ45 Console kablosu, PuTTY (9600-8-N-1)
+! =========================================================
+
+enable
+configure terminal
+
+! --- Cihaz kimliği ---
+hostname SW-DARPHANE-TEST
+
+! --- Privileged EXEC moda yetkisiz erişimi engelleme (MD5 hash) ---
+enable secret <ENABLE_SECRET>
+
+! --- Konsol portu erişim güvenliği ---
+line con 0
+ password <CONSOLE_PASSWORD>
+ login
+ exit
+
+! --- Uzak yönetim hatları (Telnet/SSH) ---
+line vty 0 15
+ password <VTY_PASSWORD>
+ login
+ exit
+
+! --- Parolaların running-config'te açık metin kalmaması ---
+service password-encryption
+
+! --- Yönetim IP'si: Switch Virtual Interface (SVI) - VLAN 1 ---
+interface vlan 1
+ ip address 192.168.1.2 255.255.255.0
+ no shutdown
+ exit
+
+! --- Konfigürasyonu kalıcı belleğe (NVRAM) kaydet ---
+end
+write memory
+! copy running-config startup-config
+
+! =========================================================
+! Doğrulama komutları:
+!   show running-config
+!   show vlan brief
+!   ping 192.168.1.2   (PC-1 üzerinden çalıştırılır)
+! =========================================================

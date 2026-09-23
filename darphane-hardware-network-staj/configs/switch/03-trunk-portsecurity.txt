@@ -1,0 +1,39 @@
+! =========================================================
+! SW-DARPHANE-TEST — Trunk (Router Bağlantısı) ve Port Security
+! Kaynak: Staj Günü 13 (23/07/2026) ve Günü 19 (31/07/2026)
+! =========================================================
+
+enable
+configure terminal
+
+! --- Router'a bağlı port: birden fazla VLAN etiketli trafik taşır ---
+interface GigabitEthernet0/1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+ exit
+
+! --- Port Security: Fa0/1 üzerinde yetkisiz cihaz erişimini engelleme ---
+interface FastEthernet0/1
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security maximum 1
+ switchport port-security violation shutdown
+ exit
+
+end
+write memory
+
+! =========================================================
+! Doğrulama komutları:
+!   show interfaces trunk
+!   show port-security interface FastEthernet0/1
+!
+! Test senaryosu: Fa0/1 portuna farklı MAC adresine sahip
+! yetkisiz bir cihaz bağlandığında, port otomatik olarak
+! err-disable moduna geçer ve trafiği keser.
+!
+! Portu tekrar aktif etmek için:
+!   interface FastEthernet0/1
+!   shutdown
+!   no shutdown
+! =========================================================

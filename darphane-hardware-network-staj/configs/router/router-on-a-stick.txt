@@ -1,0 +1,44 @@
+! =========================================================
+! Router — Router-on-a-Stick ile Inter-VLAN Routing
+! Kaynak: Staj Günü 13 (23/07/2026)
+! Cihaz: Cisco 2911 Seri Yönlendirici (Packet Tracer'da eşdeğeri)
+! =========================================================
+
+enable
+configure terminal
+
+hostname RT-DARPHANE-TEST
+
+! --- Fiziksel arayüzü aktif etme (kendisi IP almaz, sadece taşır) ---
+interface GigabitEthernet0/0/0
+ no shutdown
+ exit
+
+! --- VLAN 10 (PERSONEL) için alt-arayüz ---
+interface GigabitEthernet0/0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+ exit
+
+! --- VLAN 20 (MISAFIR) için alt-arayüz ---
+interface GigabitEthernet0/0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ exit
+
+end
+write memory
+
+! =========================================================
+! Doğrulama komutları:
+!   show ip interface brief
+!   show vlans (router tarafında)
+!
+! Test: PC-1 (VLAN10) üzerinden PC-2 (VLAN20)'ye ping atılır.
+! İlk paket ARP çözümlemesi nedeniyle düşebilir; sonraki ICMP
+! Echo Reply paketleri eksiksiz alınmalıdır.
+!
+! Not: Switch tarafında GigabitEthernet0/1 portunun
+! "switchport mode trunk" olarak ayarlanmış olması zorunludur
+! (bkz. configs/switch/03-trunk-portsecurity.txt).
+! =========================================================

@@ -1,0 +1,10 @@
+[2026-07-30 09:14:02] 192.168.1.2 | WARNING | LINK_DOWN | %LINK-3-UPDOWN: Interface FastEthernet0/1, changed state to down
+[2026-07-30 09:14:11] 192.168.1.2 | WARNING | LINK_UP | %LINK-3-UPDOWN: Interface FastEthernet0/1, changed state to up
+[2026-07-30 09:16:44] 192.168.1.2 | WARNING | UNAUTHORIZED_LOGIN_ATTEMPT | %SEC_LOGIN-4-LOGIN_FAILED: Login failed [user: admin] [Source: 192.168.1.55] [localport: 23] [Reason: Login Authentication Failed]
+[2026-07-30 09:22:10] 192.168.1.2 | NOTICE | CONFIG_CHANGED | %SYS-5-CONFIG_I: Configured from console by console
+[2026-07-31 11:05:33] 192.168.1.2 | ERROR | PORT_SECURITY_VIOLATION | %PORT_SECURITY-2-PSECURE_VIOLATION: Security violation occurred, caused by MAC address 00AA.11BB.22CC on port FastEthernet0/1.
+
+# Not: Bu dosya, scripts/syslog_listener.py aracının ürettiği format ve
+# içeriği göstermek amacıyla hazırlanmış örnek bir kayıttır (demo/dokümantasyon
+# amaçlıdır). Gerçek çalışma sırasında araç bu klasöre kendi log dosyalarını
+# otomatik olarak zaman damgalı isimle (syslog_YYYYMMDD_HHMMSS.log) yazar.

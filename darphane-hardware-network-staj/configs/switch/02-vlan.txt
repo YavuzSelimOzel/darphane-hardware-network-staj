@@ -1,0 +1,40 @@
+! =========================================================
+! SW-DARPHANE-TEST — VLAN Segmentasyonu ve Access Port Konfigürasyonu
+! Kaynak: Staj Günü 11 (21/07/2026)
+! =========================================================
+
+enable
+configure terminal
+
+! --- VLAN 10: PERSONEL ---
+vlan 10
+ name PERSONEL
+ exit
+
+! --- VLAN 20: MISAFIR ---
+vlan 20
+ name MISAFIR
+ exit
+
+! --- PC-1 bağlı port -> VLAN 10 ---
+interface FastEthernet0/1
+ switchport mode access
+ switchport access vlan 10
+ exit
+
+! --- PC-2 bağlı port -> VLAN 20 ---
+interface FastEthernet0/2
+ switchport mode access
+ switchport access vlan 20
+ exit
+
+end
+write memory
+
+! =========================================================
+! Doğrulama komutları:
+!   show vlan brief
+!   show interfaces status
+! Beklenen sonuç: VLAN 10 (PERSONEL) ve VLAN 20 (MISAFIR) "active"
+! durumda, Fa0/1 ve Fa0/2 ilgili VLAN'lara doğru atanmış olmalı.
+! =========================================================
